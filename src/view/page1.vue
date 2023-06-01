@@ -1,10 +1,9 @@
 <template lang="pug">
 .page1
-  h2 복사 및 sns 공유
   button(type="button" @click="getShare('twitter')") 트위터
   button(type="button" @click="getShare('facebook')") 페이스북
   button(type="button" @click="getShare('copy')") 복사하기
-  span.tag(@click="getCopy('#복사할단어')") #복사할단어
+  span.tag(@click="getCopy('#복사할단어 #단어복사2')") #단어복사 #단어복사2
 </template>
 
 <script setup>
