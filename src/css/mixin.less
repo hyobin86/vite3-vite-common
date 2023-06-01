@@ -1,0 +1,210 @@
+/* Text Hidden */
+.textHidden(@type: 1) {
+  & when (@type = 1) {
+    overflow: hidden;
+    text-indent: -10000em;
+  }
+  & when (@type = 2) {
+    color: transparent;
+    font-size: 0;
+  }
+}
+/* Text Overflow */
+.textOverflow(@type: 1) {
+  & when (@type = 1) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  & when (@type > 1) {
+    display: inline-block;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @type;
+  }
+}
+/* underline */
+.hoverUnderline(@color:black) {
+  text-decoration: underline solid transparent;
+  &:hover {
+    text-decoration: underline solid @color;
+  }
+}
+.posLeft(@top: 0, @left: 0, @pos: absolute) {
+  position: @pos;
+  top: unit(@top, px);
+  left: unit(@left, px);
+}
+.posRight(@top: 0, @right: 0, @pos: absolute) {
+  position: @pos;
+  top: unit(@top, px);
+  right: unit(@right, px);
+}
+/* Center Box */
+.centerBox(@pos: null, @index: null) {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  & when not ((@pos = null) or (@pos = false)) {
+    position: @pos;
+  }
+  & when not ((@index = null) or (@index = false)) {
+    z-index: @index;
+  }
+}
+/* Center Position  */
+.centerPos(@top: null, @left: null, @pos: true) {
+  & when (@pos = true) {
+    position: absolute;
+    left: 50%;
+  }
+  & when not ((@top = null) or (@top = false)) {
+    top: if(@top = 0, 0, unit(@top, px));
+  }
+  & when not ((@left = null) or (@left = false)) {
+    margin-left: if(@left = 0, 0, unit(@left, px));
+  }
+}
+/* Background */
+.bg() {
+  background: none no-repeat 0 0;
+}
+.bg(@background, @options: no-repeat 0 0, @optionFlag: false) {
+  @image-length: length(@background);
+  @background-1: extract(@background, 1);
+  @background-2: extract(@background, 2);
+  @background-color: if(iscolor(@background-1), @background-1);
+  @background-image: if(
+    iscolor(@background-1),
+    if(@image-length = 2, @background-2),
+    @background-1
+  );
+  @option-length: length(@options);
+  @option-1: extract(@options, 1);
+  @option-2: extract(@options, 2);
+  @option-3: extract(@options, 3);
+  @option-return: if(
+    (@option-1 = full) or (@option-1 = half),
+    no-repeat
+      if(
+        @option-length = 1,
+        0 0,
+        if(
+          @option-length = 2,
+          if(
+            @option-2 = center,
+            center,
+            if(
+              isnumber(@option-2) or @option-2 = left or @option-2 = right,
+              @option-2 0,
+              0 @option-2
+            )
+          ),
+          @option-2 @option-3
+        )
+      ),
+    if(
+      (
+        isnumber(@option-1) or @option-1 = left or @option-1 = right or
+          @option-1 = center or @option-1 = top or @option-1 = bottom
+      ),
+      no-repeat
+        if(
+          @option-length = 1,
+          if(
+            @option-1 = center,
+            center center,
+            if(
+              isnumber(@option-1) or @option-1 = left or @option-1 = right,
+              @option-1 0,
+              0 @option-1
+            )
+          ),
+          @options
+        ),
+      if(
+        @option-length = 1,
+        @options 0 0,
+        if(
+          @option-length = 2,
+          if(
+            @option-2 = center,
+            @options center,
+            @option-1
+              if(
+                isnumber(@option-2) or @option-2 = left or @option-2 = right,
+                @option-2 0,
+                0 @option-2
+              )
+          ),
+          @options
+        )
+      )
+    )
+  );
+  @option-value: replace(~'@{option-return}', '(top|left)', '0');
+  & when (isstring(@background-image)) {
+    @fn-background-image: replace(
+      @background-image,
+      '^Image\/',
+      '../../image/',
+      'gi'
+    );
+    background: @background-color url(@fn-background-image) @option-value;
+    & when ((@option-1 = full) or (@option-1 = half)) {
+      @fn-image-height: image-height(@fn-background-image);
+      height: if(
+        (@optionFlag = true) or
+          (
+            @option-1 = half and
+              (@option-length = 1 or (@option-2 = top or @option-2 = bottom))
+          ),
+        @fn-image-height / 2,
+        @fn-image-height
+      );
+      & when not (@option-2 = center) {
+        @fn-image-width: image-width(@fn-background-image);
+        width: if(
+          (
+            @option-1 = half and
+              (@option-length = 1 or (@option-2 = left or @option-2 = right))
+          ),
+          @fn-image-width / 2,
+          @fn-image-width
+        );
+      }
+    }
+    & when (@optionFlag = true) {
+      &:hover {
+        background-position-y: 100%;
+      }
+    }
+  }
+  & when not (isstring(@background-image)) {
+    background: @background-color @option-value;
+  }
+}
+.bgImage(@image-src) {
+  @fn-image-src: replace(@image-src, '^Image\/', '../../image/', 'gi');
+  background-image: url(@fn-image-src);
+}
+/* Background Full */
+.bgFull(@image-src, @hover: false) {
+  .bg(@image-src, full, @hover);
+}
+
+.response(@width, @rules) {
+  @media screen and (max-width: (@width - 1px)) {
+    @rules();
+  }
+}
+.channel(@rules) {
+  .ch-nexon &,
+  .ch-hangame &,
+  .ch-naver & {
+    @rules();
+  }
+}

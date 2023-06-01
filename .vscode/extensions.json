@@ -1,0 +1,6 @@
+{
+  "recommendations": ["Vue.volar", "Vue.vscode-typescript-vue-plugin"],
+  "editor.tabSize": 4, // 기본 탭 사이즈
+  "editor.formatOnSave": true, // 저장할 때 코드 스타일 교정
+  "editor.formatOnPaste": true // 붙여넣기 때 코드 스타일 교정
+}
