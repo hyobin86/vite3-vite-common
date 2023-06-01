@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 
-import Page1 from '@/view/one.vue';
-import Page2 from '@/view/two.vue';
+import Page1 from '@/view/page1.vue';
+import Page2 from '@/view/page2.vue';
 
 const routes = [
   {

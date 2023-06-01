@@ -1,7 +1,6 @@
 <template lang="pug">
 .page1
-  h2 page1
-   BaseCom(:msg="msg")
+  h2 복사 및 sns 공유
 </template>
 
 <script setup>
